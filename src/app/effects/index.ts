@@ -60,7 +60,7 @@ export class AppEffects {
     withLatestFrom(this.store),
     switchMap(([{ pipeline }, state]) =>
       state.config.config.jenkins.jobs.map(job => jenkinsActions
-        .loadJob({ url: `${pipeline.url}/job/${encodeURI(job)}/` })))
+        .loadJob({ url: `${pipeline.url}job/${encodeURIComponent(encodeURIComponent(job))}/` })))
   ));
 
   loadJob$ = createEffect(() => this.actions$.pipe(
