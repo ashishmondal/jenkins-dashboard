@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Job } from 'src/app/models/jenkins.model';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import intervalToDuration from 'date-fns/intervalToDuration';
 
 @Component({
   selector: 'mui-job',
@@ -13,17 +14,19 @@ export class JobComponent implements OnInit {
   @Input() job: Job;
 
   constructor() {
-    console.log('job');
-   }
+  }
 
   ngOnInit(): void {
   }
 
   get progress() {
-    return Math.min(
-      (this.job?.build?.duration || 0) / (this.job?.build?.estimatedDuration || 1),
-      1
-    ) * 100;
+    if (!this.job.build) {
+      return 0;
+    }
+
+    const duration = (new Date()).getTime() - (new Date(this.job?.build.timestamp)).getTime();
+    // tslint:disable-next-line:no-bitwise
+    return (Math.min(duration / (this.job.build.estimatedDuration || 1), 1) * 100) | 0;
   }
 
   get timestamp() {
@@ -32,11 +35,13 @@ export class JobComponent implements OnInit {
   }
 
   get duration() {
-    const duration = (this.job?.build?.duration || 0) / 1000;
-    // tslint:disable: no-bitwise
-    const h = (duration / 3600) | 0;
-    const m = (duration / 60) | 0;
-    const s = (duration % 60) | 0;
-    return (h > 0 ? `${h}h` : '') + (m > 0 ? `${m}m` : '') + `${s}s`;
+    if (!this.job.build) {
+      return '';
+    }
+
+    const duration = intervalToDuration({ start: new Date(this.job?.build.timestamp), end: new Date() });
+    return (duration.hours ? `${duration.hours}h ` : '')
+      + (duration.minutes ? `${duration.minutes}m` : '')
+      + (duration.seconds ? `${duration.seconds}s` : '');
   }
 }

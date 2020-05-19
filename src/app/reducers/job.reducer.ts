@@ -44,6 +44,23 @@ const jobReducer = createReducer(initialState,
       }
     }, state)
   ),
+  on(fromJenkins.jobLoadFailed, (state, { url }) =>
+    adapter.updateOne({
+      id: url,
+      changes: {
+        isLoading: false
+      }
+    }, state)
+  ),
+  on(fromJenkins.loadBuild, (state, { url }) => {
+    const id = (state.ids as string[]).find(i => url.startsWith(i)) || '';
+    return adapter.updateOne({
+      id,
+      changes: {
+        isLoading: true
+      }
+    }, state);
+  }),
   on(fromJenkins.buildLoadSuccess, (state, { build }) => {
     const id = (state.ids as string[]).find(i => build.url.startsWith(i)) || '';
     return adapter.updateOne({
@@ -53,8 +70,16 @@ const jobReducer = createReducer(initialState,
         isLoading: false
       }
     }, state);
-  }
-  )
+  }),
+  on(fromJenkins.buildLoadFailed, (state, { url }) => {
+    const id = (state.ids as string[]).find(i => url.startsWith(i)) || '';
+    return adapter.updateOne({
+      id,
+      changes: {
+        isLoading: false
+      }
+    }, state);
+  })
 );
 
 export function reducer(state: State | undefined, action: Action) {

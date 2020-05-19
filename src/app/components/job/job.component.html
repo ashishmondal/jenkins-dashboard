@@ -1,4 +1,4 @@
-<mat-progress-bar *ngIf="job?.build?.building " mode="determinate" [value]="progress"></mat-progress-bar>
+<mat-progress-bar *ngIf="job?.build?.building " mode="determinate" [value]="progress" color="accent"></mat-progress-bar>
 <div class="mui-job" [class]="'mui-' + job?.build?.result" *ngIf="job?.build">
   <div class="mui-job-name">
     <a mat-stroked-button target="_blank" [href]="job?.build?.url">

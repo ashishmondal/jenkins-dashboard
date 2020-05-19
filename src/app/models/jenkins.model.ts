@@ -16,6 +16,7 @@ export interface Job {
 
 export interface Build {
   displayName: string;
+  fullDisplayName: string;
   duration: number;
   estimatedDuration: number;
   url: string;

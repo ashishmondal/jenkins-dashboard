@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { config, of, timer } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, withLatestFrom, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import * as appActions from '../actions/app.actions';
 import * as jenkinsActions from '../actions/jenkins.actions';
-import { State } from '../reducers';
+import { selectJobs, State } from '../reducers';
 import { ConfigService } from '../services/config.service';
 import { JenkinsService } from '../services/jenkins.service';
+import { NotificationService } from '../services/notification.service';
 
 @Injectable()
 export class AppEffects {
@@ -89,11 +90,26 @@ export class AppEffects {
         ))
     )));
 
+  buildLoadSuccess$ = createEffect(() => this.actions$.pipe(
+    ofType(jenkinsActions.buildLoadSuccess),
+    withLatestFrom(this.store.pipe(select(selectJobs))),
+    tap(([{ build }, x]) => {
+      const existingBuild = x.find(j => j.build?.url === build.url)?.build;
+      if (!existingBuild || existingBuild.result === build.result) {
+        return;
+      }
+
+      this.notificationService.notifyBuild(build);
+    })), {
+    dispatch: false
+  });
+
   constructor(
     private actions$: Actions,
     private store: Store<State>,
     private configService: ConfigService,
     private jenkinsService: JenkinsService,
-    private titleService: Title
+    private titleService: Title,
+    private notificationService: NotificationService
   ) { }
 }
