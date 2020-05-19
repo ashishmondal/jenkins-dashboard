@@ -20,8 +20,9 @@ jobs:
           npm run build
 
     - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v3
+      uses: SamKirkland/FTP-Deploy-Action@3.0.0
       with:
-        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: dist/jenkins-dashboard # The folder the action should deploy.
+        ftp-server: ftp.mondal.in
+        ftp-username: cd@jenkins-dashboard.mondal.in
+        local-dir: dist/jenkins-dashboard/
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
