@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { config, of, timer } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, withLatestFrom, tap } from 'rxjs/operators';
 
 import * as appActions from '../actions/app.actions';
 import * as jenkinsActions from '../actions/jenkins.actions';
@@ -24,6 +25,7 @@ export class AppEffects {
 
   configLoadSuccess$ = createEffect(() => this.actions$.pipe(
     ofType(appActions.configLoadSuccess),
+    tap(({ config }) => this.titleService.setTitle(config.appName)),
     switchMap(({ config }) => timer(0, config.delay * 1000).pipe(
       switchMap(() => config.jenkins.pipelines.map(url => jenkinsActions.loadPipeline({ url })))
     ))));
@@ -51,7 +53,7 @@ export class AppEffects {
     mergeMap(({ url }) => this.jenkinsService.getPipeline(url)
       .pipe(
         map(pipeline => jenkinsActions.pipelineLoadSuccess({ pipeline })),
-        catchError(() => of(jenkinsActions.pipelineLoadFailed({ url }))
+        catchError(loadError => of(jenkinsActions.pipelineLoadFailed({ url, loadError }))
         ))
     )));
 
@@ -60,7 +62,7 @@ export class AppEffects {
     withLatestFrom(this.store),
     switchMap(([{ pipeline }, state]) =>
       state.config.config.jenkins.jobs.map(job => jenkinsActions
-        .loadJob({ url: `${pipeline.url}job/${encodeURIComponent(encodeURIComponent(job))}/` })))
+        .loadJob({ url: `${pipeline.url}job/${job}/` })))
   ));
 
   loadJob$ = createEffect(() => this.actions$.pipe(
@@ -91,6 +93,7 @@ export class AppEffects {
     private actions$: Actions,
     private store: Store<State>,
     private configService: ConfigService,
-    private jenkinsService: JenkinsService
+    private jenkinsService: JenkinsService,
+    private titleService: Title
   ) { }
 }

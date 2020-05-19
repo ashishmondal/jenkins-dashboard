@@ -24,7 +24,7 @@ const jobReducer = createReducer(initialState,
       .map(p => config.jenkins.jobs.map(job => ({
         name: job,
         url: `${p}job/${job}/`,
-        isBusy: false
+        isLoading: false
       })))
       .reduce((p, c) => [...p, ...c], []);
     return adapter.addMany(jobs, state);
@@ -32,7 +32,7 @@ const jobReducer = createReducer(initialState,
   on(fromJenkins.loadJob, (state, { url }) =>
     adapter.updateOne({
       id: url,
-      changes: { isBusy: true }
+      changes: { isLoading: true }
     }, state)
   ),
   on(fromJenkins.jobLoadSuccess, (state, { job }) =>
@@ -40,7 +40,7 @@ const jobReducer = createReducer(initialState,
       id: job.url,
       changes: {
         ...job,
-        isBusy: false
+        isLoading: false
       }
     }, state)
   ),
@@ -50,7 +50,7 @@ const jobReducer = createReducer(initialState,
       id,
       changes: {
         build,
-        isBusy: false
+        isLoading: false
       }
     }, state);
   }

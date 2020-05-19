@@ -12,7 +12,9 @@ export class JobComponent implements OnInit {
 
   @Input() job: Job;
 
-  constructor() { }
+  constructor() {
+    console.log('job');
+   }
 
   ngOnInit(): void {
   }

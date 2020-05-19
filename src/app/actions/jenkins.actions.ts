@@ -4,7 +4,7 @@ import { Pipeline, Job, Build } from '../models/jenkins.model';
 
 export const loadPipeline = createAction('[App] Load Pipeline', props<{ url: string}>());
 export const pipelineLoadSuccess = createAction('[App] Pipeline Loaded', props<{ pipeline: Pipeline }>());
-export const pipelineLoadFailed = createAction('[App] Pipeline Load Failed', props<{ url: string }>());
+export const pipelineLoadFailed = createAction('[App] Pipeline Load Failed', props<{ url: string, loadError: string }>());
 
 export const loadJob = createAction('[App] Load Job', props<{ url: string }>());
 export const jobLoadSuccess = createAction('[App] Job Loaded', props<{ job: Job }>());

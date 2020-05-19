@@ -22,19 +22,25 @@ const pipelineReducer = createReducer(initialState,
   on(fromApp.configLoadSuccess, (state, { config }) =>
     adapter.addMany(config.jenkins.pipelines.map(url => ({
       url,
-      isBusy: false
+      isLoading: false
     })), state)
   ),
   on(fromJenkins.loadPipeline, (state, { url }) =>
     adapter.updateOne({
       id: url,
-      changes: { isBusy: true }
+      changes: { isLoading: true }
     }, state)
   ),
   on(fromJenkins.pipelineLoadSuccess, (state, { pipeline }) =>
     adapter.updateOne({
       id: pipeline.url,
-      changes: { ...pipeline, isBusy: false }
+      changes: { ...pipeline, isLoading: false }
+    }, state)
+  ),
+  on(fromJenkins.pipelineLoadFailed, (state, { url, loadError }) =>
+    adapter.updateOne({
+      id: url,
+      changes: { loadError, isLoading: false }
     }, state)
   )
 );
