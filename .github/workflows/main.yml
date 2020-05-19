@@ -22,7 +22,7 @@ jobs:
     - name: Deploy
       uses: SamKirkland/FTP-Deploy-Action@3.0.0
       with:
-        ftp-server: ftp.mondal.in
-        ftp-username: cd@jenkins-dashboard.mondal.in
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USER }}
         local-dir: dist/jenkins-dashboard/
         ftp-password: ${{ secrets.FTP_PASSWORD }}
