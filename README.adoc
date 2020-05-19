@@ -1,0 +1,11 @@
+= Jenkins Dashbord
+
+See this in action at https://jenkins-dashboard.mondal.in.
+
+Jenkins dashboard is the web application for your jenkins pipelines. It supports viewing status of multiple pipelines from multiple repositories.
+
+Make sure you have:
+
+. Enabled anonymous reads
+. Whitelisted URL using CORS plugin
+
