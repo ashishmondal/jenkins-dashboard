@@ -1,0 +1,36 @@
+.mui-toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+.mui-brand {
+  display: flex;
+  align-items: center;
+}
+
+.mui-logo {
+  width: 1.5em;
+}
+
+.mui-card {
+  margin: 0.5em 0;
+}
+
+.mui-title {
+  padding: 0 1em;
+}
+.mui-dashboard {
+  display: grid;
+  padding: 2em;
+}
+
+.mui-job-name {
+  padding: 1em 2em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+i {
+    padding-right: 0.25em;
+    padding-bottom: 0.25em;
+}

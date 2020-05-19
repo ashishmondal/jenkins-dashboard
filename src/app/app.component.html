@@ -1,0 +1,28 @@
+<mat-toolbar class="mui-toolbar">
+  <div class="mui-brand">
+    <img class="mui-logo" src="https://www.jenkins.io/images/logos/stay-safe/stay-safe.png" />
+    <span class="mui-title">{{ (config$ | async)?.appName }}</span>
+  </div>
+  <div>
+    <button mat-button [matMenuTriggerFor]="menu"><i class="fa fa-cog"></i>Configuration</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="fileUpload.click()"><i class="fa fa-upload"></i>Upload</button>
+      <input #fileUpload type="file" (change)="uploadConfig(fileUpload.files[0])" style="display: none;"/>
+      <button mat-menu-item><i class="fa fa-pencil-square-o"></i>Edit</button>
+      <button mat-menu-item><i class="fa fa-download"></i>Download</button>
+    </mat-menu>
+  </div>
+</mat-toolbar>
+<div class="mui-dashboard" [ngStyle]="{'grid-template-columns': 'auto repeat('+ (jobs$ | async)?.length +', 1fr)'}">
+  <div></div>
+  <div *ngFor="let job of (jobs$ | async)" class="mui-job-name">
+    {{job}}
+  </div>
+
+  <ng-container *ngFor="let pipeline of (pipelines$ | async)">
+    <mui-pipeline class="mat-card mui-card" [pipeline]="getProject(pipeline) | async"></mui-pipeline>
+    <ng-container *ngFor="let job of (jobs$ | async)">
+      <mui-job class="mat-card mui-card" [job]="getJob(pipeline, job) | async"></mui-job>
+    </ng-container>
+  </ng-container>
+</div>
