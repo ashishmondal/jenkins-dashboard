@@ -24,7 +24,7 @@ const jobReducer = createReducer(initialState,
       .map(p => config.jenkins.jobs.map(job => ({
         name: job,
         url: `${p}job/${job}/`,
-        isBusy: false
+        isLoading: false
       })))
       .reduce((p, c) => [...p, ...c], []);
     return adapter.addMany(jobs, state);
@@ -32,7 +32,7 @@ const jobReducer = createReducer(initialState,
   on(fromJenkins.loadJob, (state, { url }) =>
     adapter.updateOne({
       id: url,
-      changes: { isBusy: true }
+      changes: { isLoading: true }
     }, state)
   ),
   on(fromJenkins.jobLoadSuccess, (state, { job }) =>
@@ -40,21 +40,46 @@ const jobReducer = createReducer(initialState,
       id: job.url,
       changes: {
         ...job,
-        isBusy: false
+        isLoading: false
       }
     }, state)
   ),
-  on(fromJenkins.buildLoadSuccess, (state, { build }) => {
+  on(fromJenkins.jobLoadFailed, (state, { url }) =>
+    adapter.updateOne({
+      id: url,
+      changes: {
+        isLoading: false
+      }
+    }, state)
+  ),
+  on(fromJenkins.loadBuild, (state, { url }) => {
+    const id = (state.ids as string[]).find(i => url.startsWith(i)) || '';
+    return adapter.updateOne({
+      id,
+      changes: {
+        isLoading: true
+      }
+    }, state);
+  }),
+  on(fromJenkins.buildLoadSuccessPost, (state, { build }) => {
     const id = (state.ids as string[]).find(i => build.url.startsWith(i)) || '';
     return adapter.updateOne({
       id,
       changes: {
         build,
-        isBusy: false
+        isLoading: false
       }
     }, state);
-  }
-  )
+  }),
+  on(fromJenkins.buildLoadFailed, (state, { url }) => {
+    const id = (state.ids as string[]).find(i => url.startsWith(i)) || '';
+    return adapter.updateOne({
+      id,
+      changes: {
+        isLoading: false
+      }
+    }, state);
+  })
 );
 
 export function reducer(state: State | undefined, action: Action) {

@@ -6,23 +6,26 @@
   <div>
     <button mat-button [matMenuTriggerFor]="menu"><i class="fa fa-cog"></i>Configuration</button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="fileUpload.click()"><i class="fa fa-upload"></i>Upload</button>
-      <input #fileUpload type="file" (change)="uploadConfig(fileUpload.files[0])" style="display: none;"/>
-      <button mat-menu-item><i class="fa fa-pencil-square-o"></i>Edit</button>
-      <button mat-menu-item><i class="fa fa-download"></i>Download</button>
+      <button mat-menu-item (click)="fileUpload.click()"><i class="fa fa-upload"></i>Load</button>
+      <input #fileUpload type="file" (change)="uploadConfig(fileUpload.files[0])" style="display: none;" />
+      <!-- <button mat-menu-item><i class="fa fa-pencil-square-o"></i>Edit</button>
+      <button mat-menu-item><i class="fa fa-download"></i>Save</button> -->
     </mat-menu>
   </div>
 </mat-toolbar>
-<div class="mui-dashboard" [ngStyle]="{'grid-template-columns': 'auto repeat('+ (jobs$ | async)?.length +', 1fr)'}">
-  <div></div>
-  <div *ngFor="let job of (jobs$ | async)" class="mui-job-name">
-    {{job}}
-  </div>
+<div class="mui-workspace">
+  <mat-progress-bar *ngIf="loading$ | async" mode="indeterminate"></mat-progress-bar>
+  <div class="mui-dashboard" [ngStyle]="{'grid-template-columns': 'auto repeat('+ (jobs$ | async)?.length +', 1fr)'}">
+    <div></div>
+    <div *ngFor="let job of (jobs$ | async)" class="mui-job-name">
+      {{getJobName(job)}}
+    </div>
 
-  <ng-container *ngFor="let pipeline of (pipelines$ | async)">
-    <mui-pipeline class="mat-card mui-card" [pipeline]="getProject(pipeline) | async"></mui-pipeline>
-    <ng-container *ngFor="let job of (jobs$ | async)">
-      <mui-job class="mat-card mui-card" [job]="getJob(pipeline, job) | async"></mui-job>
+    <ng-container *ngFor="let pipeline of (pipelines$ | async)">
+      <mui-pipeline class="mat-card mui-card" [pipeline]="getProject(pipeline) | async"></mui-pipeline>
+      <ng-container *ngFor="let job of (jobs$ | async)">
+        <mui-job class="mat-card mui-card" [job]="getJob(pipeline, job) | async"></mui-job>
+      </ng-container>
     </ng-container>
-  </ng-container>
+  </div>
 </div>

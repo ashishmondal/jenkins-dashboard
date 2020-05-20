@@ -12,12 +12,23 @@
   width: 1.5em;
 }
 
+.mui-workspace {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  mat-progress-bar {
+    position: absolute;
+  }
+}
+
 .mui-card {
   margin: 0.5em 0;
 }
 
 .mui-title {
   padding: 0 1em;
+  font-family: 'Vast Shadow', cursive;
+  font-size: 1.5em;
 }
 .mui-dashboard {
   display: grid;

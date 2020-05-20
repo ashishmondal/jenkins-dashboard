@@ -1,20 +1,22 @@
 export interface Pipeline {
-  isBusy: boolean;
   url: string;
   displayName?: string;
   jobs?: string[];
+  isLoading: boolean;
+  loadError?: string;
 }
 
 export interface Job {
   name: string;
   url: string;
-  isBusy: boolean;
+  isLoading: boolean;
   lastBuild?: Build;
   build?: Build;
 }
 
 export interface Build {
   displayName: string;
+  fullDisplayName: string;
   duration: number;
   estimatedDuration: number;
   url: string;
@@ -52,7 +54,7 @@ export interface UserIdCause extends BuildCause {
 }
 
 export interface ReplayCause extends BuildCause {
-  _class: 'org.jenkinsci.plugins.workflow.cps.replay.ReplayCause',
+  _class: 'org.jenkinsci.plugins.workflow.cps.replay.ReplayCause';
   shortDescription: string;
 }
 

@@ -9,3 +9,20 @@ Make sure you have:
 . Enabled anonymous reads
 . Whitelisted URL using CORS plugin
 
+== Configuration
+
+[source, json]
+----
+{
+  "appName": "Jenkins Dashboard",
+  "delay": 60,
+  "jenkins": {
+    "pipelines": [
+      "http://jenkins.io/job/job1/"
+    ],
+    "jobs": ["master", "develop", "feature%252Flatest"] <1>
+  }
+}
+----
+<1> Note that if you job names have special characters, it has to be encoded _twice_.
+
