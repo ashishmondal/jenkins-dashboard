@@ -1,30 +1,31 @@
 export interface Pipeline {
-  url: string;
   displayName?: string;
-  jobs?: string[];
   isLoading: boolean;
+  jobs?: string[];
   loadError?: string;
+  url: string;
 }
 
 export interface Job {
-  name: string;
-  url: string;
+  build?: Build;
   isLoading: boolean;
   lastBuild?: Build;
-  build?: Build;
+  name: string;
+  url: string;
 }
 
 export interface Build {
+  actions: BuildAction[];
+  building: boolean;
+  culprits: Culprit[];
   displayName: string;
-  fullDisplayName: string;
   duration: number;
   estimatedDuration: number;
-  url: string;
-  building: boolean;
-  triggeredBy: string;
-  timestamp: number;
+  fullDisplayName: string;
   result: string;
-  actions: BuildAction[];
+  timestamp: number;
+  triggeredBy: string;
+  url: string;
 }
 
 export interface BuildAction {
@@ -56,5 +57,10 @@ export interface UserIdCause extends BuildCause {
 export interface ReplayCause extends BuildCause {
   _class: 'org.jenkinsci.plugins.workflow.cps.replay.ReplayCause';
   shortDescription: string;
+}
+
+export interface Culprit {
+  absoluteUrl: string;
+  fullName: string;
 }
 

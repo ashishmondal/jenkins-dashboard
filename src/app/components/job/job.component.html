@@ -11,18 +11,25 @@
       <ng-container [ngSwitch]="action._class">
         <div *ngSwitchCase="'hudson.model.CauseAction'">
           <ng-container *ngFor="let cause of action.causes">
-            <ng-container [ngSwitch]="cause._class">
-              <div *ngSwitchCase="'hudson.model.Cause$UserIdCause'">
-                <i class="fa fa-user"></i>{{cause.userName}}
-              </div>
-              <div *ngSwitchDefault>
-                <i class="fa fa-code-fork"></i>{{cause.shortDescription}}
-              </div>
-            </ng-container>
+            <i class="fa fa-code-fork"></i>{{cause.shortDescription}}
           </ng-container>
         </div>
       </ng-container>
     </ng-container>
+    <div>
+      <mat-chip-list>
+        <mat-chip color="primary" *ngFor="let culprit of job?.build?.culprits" [matTooltip]="culprit.fullName">
+          <ng-container [ngSwitch]="culprit.fullName">
+            <ng-container *ngSwitchCase="'jenkins'">
+              <img src="assets/images/jenkins.svg" style="height: 1em;"/>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              {{getInitials(culprit.fullName)}}
+            </ng-container>
+          </ng-container>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
   </div>
   <div>
     <i class="fa fa-spinner fa-spin" *ngIf="job?.build?.building"></i>

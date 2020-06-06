@@ -82,4 +82,9 @@ export class JobComponent implements OnInit {
 
     return 0.6;
   }
+
+  getInitials(fullName: string) {
+    const parts = fullName.split(' ');
+    return parts[0][0] + parts[parts.length - 1][0];
+  }
 }

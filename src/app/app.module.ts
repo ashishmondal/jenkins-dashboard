@@ -2,10 +2,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
@@ -31,10 +33,12 @@ import { metaReducers, reducers } from './reducers';
     AppRoutingModule,
     MatButtonModule,
     MatCardModule,
+    MatChipsModule,
     MatMenuModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
+    MatTooltipModule,
     HttpClientModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers, {
