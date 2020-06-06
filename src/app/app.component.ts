@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
 import * as appActions from './actions/app.actions';
-import { selectConfig, selectJob, selectLoading, selectPipeline, State } from './reducers';
+import { selectConfig, selectJob, selectLoading, selectPipeline, State, selectNotificationPermission } from './reducers';
 
 @Component({
   selector: 'mui-root',
@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   pipelines$ = this.config$.pipe(map(config => config.jenkins.pipelines));
   jobs$ = this.config$.pipe(map(config => config.jenkins.jobs));
   loading$ = this.store.pipe(select(selectLoading));
+  notificationPermission$ = this.store.pipe(select(selectNotificationPermission));
 
   ngOnInit(): void {
     this.store.dispatch(appActions.loadConfig());
@@ -39,5 +40,9 @@ export class AppComponent implements OnInit {
 
   uploadConfig(file: File) {
     this.store.dispatch(appActions.loadConfigFile({ file }));
+  }
+
+  requestNotificationPermission() {
+    this.store.dispatch(appActions.requestNotificationPermission());
   }
 }

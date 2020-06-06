@@ -6,6 +6,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,7 +20,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { JobComponent } from './components/job/job.component';
 import { PipelineComponent } from './components/pipeline/pipeline.component';
-import { AppEffects } from './effects';
+import { ConfigEffects, JenkinsEffects, NotificationEffects } from './effects';
 import { metaReducers, reducers } from './reducers';
 
 @NgModule({
@@ -37,6 +38,7 @@ import { metaReducers, reducers } from './reducers';
     MatMenuModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
+    MatSlideToggleModule,
     MatToolbarModule,
     MatTooltipModule,
     HttpClientModule,
@@ -49,7 +51,7 @@ import { metaReducers, reducers } from './reducers';
       }
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AppEffects])
+    EffectsModule.forRoot([ConfigEffects, JenkinsEffects, NotificationEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

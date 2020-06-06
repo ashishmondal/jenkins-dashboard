@@ -9,4 +9,6 @@ export const saveConfig = createAction('[App] Save Config', props<{ config: Conf
 export const configLoadSuccess = createAction('[App] Config Loaded', props<{ config: Config }>());
 export const configLoadFailed = createAction('[App] Config Load Failed');
 
+export const notifyPermission = createAction('[App] Notification Perimission', props<{ notificationPermission: NotificationPermission }>());
+export const requestNotificationPermission = createAction('[App] Request Notification Permission');
 export const notifyBuild = createAction('[App] Notify Build', props<{ build: Build }>());

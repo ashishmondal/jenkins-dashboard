@@ -7,18 +7,24 @@ import * as fromConfig from './config.reducer';
 import * as fromJob from './job.reducer';
 import * as fromPipeline from './pipeline.reducer';
 import { jobLoadSuccess } from '../actions/jenkins.actions';
+import * as fromApp from './app.reducer';
 
 export interface State {
+  app: fromApp.State;
   config: fromConfig.State;
   pipelines: fromPipeline.State;
   jobs: fromJob.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
+  app: fromApp.reducer,
   config: fromConfig.reducer,
   pipelines: fromPipeline.reducer,
   jobs: fromJob.reducer
 };
+
+const selectAppState = (state: State) => state.app;
+export const selectNotificationPermission = createSelector(selectAppState, state => state.notificationPermission);
 
 const selectConfigState = (state: State) => state.config;
 export const selectConfig = createSelector(selectConfigState, state => state.config);

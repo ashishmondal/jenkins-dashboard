@@ -1,17 +1,26 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { from } from 'rxjs';
 
-import { Build, Job, Pipeline } from '../models/jenkins.model';
+import * as fromApp from '../actions/app.actions';
+import { Build } from '../models/jenkins.model';
+import { State } from '../reducers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  constructor() {
-    if (window.Notification && Notification.permission !== 'granted') {
-      Notification.requestPermission();
-    }
+  constructor(private store: Store<State>) {
+    // if (window.Notification && Notification.permission !== 'granted') {
+    //   Notification.requestPermission();
+    // }
+    const notificationPermission = window.Notification && Notification.permission;
+    this.store.dispatch(fromApp.notifyPermission({ notificationPermission }));
+  }
+
+  requestNotificationPermission() {
+    return from(Notification.requestPermission());
   }
 
   notifyBuild(title: string, build: Build) {
