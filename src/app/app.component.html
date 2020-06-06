@@ -3,7 +3,12 @@
     <img class="mui-logo" src="https://www.jenkins.io/images/logos/stay-safe/stay-safe.png" />
     <span class="mui-title">{{ (config$ | async)?.appName }}</span>
   </div>
-  <div>
+  <div class="mui-menu-bar">
+    <button mat-raised-button color="accent" *ngIf="(notificationPermission$ | async) === 'default'"
+      (click)="requestNotificationPermission()"><i class="fa fa-bell bell"></i>Turn On Desktop Notifications</button>
+    <a mat-raised-button color="warn" *ngIf="(notificationPermission$ | async) === 'denied'"
+      href="https://support.google.com/chrome/answer/3220216" target="_blank"><i class="fa fa-bell-slash"></i>Turn On
+      Desktop Notifications</a>
     <button mat-button [matMenuTriggerFor]="menu"><i class="fa fa-cog"></i>Configuration</button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="fileUpload.click()"><i class="fa fa-upload"></i>Load</button>
