@@ -20,9 +20,23 @@ Make sure you have:
     "pipelines": [
       "http://jenkins.io/job/job1/"
     ],
-    "jobs": ["master", "develop", "feature%252Flatest"] <1>
+    "jobs": ["master", "develop", "feature%252Flatest"] //<1>
   }
 }
 ----
 <1> Note that if you job names have special characters, it has to be encoded _twice_.
 
+== HTTP vs HTTPS
+
+Serving the site over HTTP will have certain restrictions:
+
+|===
+|Feature | HTTP | HTTPS
+
+|Desktop Notifications | ❌ | ✔️
+
+|Jenkins over HTTP | ✔️ | ❌^1^
+
+|Jenkins over HTTPS | ✔️ | ✔️
+|===
+<1> As a workaround, *Mixed Content* can be enabled in browsers using the steps mentioned https://docs.adobe.com/content/help/en/target/using/experiences/vec/troubleshoot-composer/mixed-content.html[here].
